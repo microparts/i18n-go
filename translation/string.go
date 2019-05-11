@@ -102,7 +102,7 @@ func (o *String) Map(f func(string) string) String {
 		return String{}
 	}
 
-	s := String{}.Init()
+	s := (&String{}).Init()
 
 	for lang, str := range o.Translate {
 		s.Translate[strings.ToLower(lang)] = f(str)
