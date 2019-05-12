@@ -45,13 +45,13 @@ func Handler(w http.ResponseWriter, req *http.Request) {
 	translateCtx := translation.NewContext(&Conf, req)
 	
 	rec := &Record{
-		Id: 10,
-		Name: translation.String {
-		    Translate: map[string]string {
-    			"en": "Hello world!",
-    			"ru": "Здравствуй мир!",
+	    Id: 10,
+	    Name: translation.String {
+	        Translate: map[string]string {
+    		    "en": "Hello world!",
+    		    "ru": "Здравствуй мир!",
 	    	},
-		},
+	    },
 	}
 	
 	rec.ApplyTranslationCtx(translateCtx)
