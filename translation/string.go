@@ -42,7 +42,7 @@ func (o *String) ApplyTranslationCtx(ctx Context) {
 
 	o.ctxApplied = true
 
-	if str, ok := o.Translate[ctx.GetDisplay()]; ok {
+	if str, ok := o.Translate[ctx.GetDisplay()]; ok && str != "" {
 		o.Display = str
 	} else {
 		o.Display = o.Translate[ctx.GetFallback()]
