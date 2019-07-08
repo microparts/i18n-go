@@ -1,4 +1,8 @@
-# i18n-go
+i18n-go
+------------
+
+[![CircleCI](https://circleci.com/gh/microparts/i18n-go.svg?style=shield)](https://circleci.com/gh/microparts/i18n-go)
+
 A small set of helpers for using as i18n part of companies services and applications.
 
 # Translation
