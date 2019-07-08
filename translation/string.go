@@ -30,14 +30,31 @@ func (o *String) Init() *String {
 	return o
 }
 
-func (o *String) ClearContext() {
+func (o *String) Reset() {
 	o.Display = ""
 	o.Second = ""
+	o.Translate = nil
+	o.ctxApplied = false
 }
 
-func (o *String) ApplyTranslationCtx(ctx Context) {
-	if o.ctxApplied {
-		return
+func (o *String) resetTranslation() *String {
+	o.Display = ""
+	o.Second = ""
+	o.ctxApplied = false
+
+	return o
+}
+
+func (o *String) ClearContext() *String {
+	o.Display = ""
+	o.Second = ""
+
+	return o
+}
+
+func (o *String) ApplyTranslationCtx(ctx Context) *String {
+	if o == nil || o.ctxApplied {
+		return o
 	}
 
 	o.ctxApplied = true
@@ -53,9 +70,15 @@ func (o *String) ApplyTranslationCtx(ctx Context) {
 	if !ctx.GetTranslationList() {
 		o.Translate = nil
 	}
+
+	return o
 }
 
 func (o *String) Clone() *String {
+	if o == nil {
+		return nil
+	}
+
 	cloned := *o
 
 	if len(o.Translate) > 0 {
@@ -91,10 +114,16 @@ func (o *String) Add(r String) {
 	o.Init()
 
 	for lang, str := range r.Translate {
-		lang = strings.ToLower(lang)
-
-		o.Translate[lang] = o.Translate[lang] + str
+		o.Translate[strings.ToLower(lang)] += str
 	}
+}
+
+func (o *String) AddTranslate(lang, str string) *String {
+	o.Init()
+
+	o.Translate[lang] = str
+
+	return o
 }
 
 func (o *String) Map(f func(string) string) String {
@@ -112,29 +141,24 @@ func (o *String) Map(f func(string) string) String {
 }
 
 func (o *String) Join(r String, s string) String {
-	var translation map[string]string
-
-	if len(r.Translate) > 0 || len(o.Translate) > 0 {
-		translation = make(map[string]string)
-	}
+	joined := *o.Clone().resetTranslation()
 
 	for lang, str := range r.Translate {
 		lang = strings.ToLower(lang)
 
-		if _, ok := o.Translate[lang]; ok {
-			str = o.Translate[lang] + s + str
+		if _, ok := joined.Translate[lang]; !ok {
+			joined.Translate[lang] = str
+			continue
 		}
 
-		translation[lang] = str
+		joined.Translate[lang] += s + str
 	}
 
-	return String{
-		Translate: translation,
-	}
+	return joined
 }
 
 func (o *String) Trim() int {
-	o.Map(func(s string) string { return strings.TrimSpace(s) })
+	*o = o.Map(func(s string) string { return strings.TrimSpace(s) })
 
 	return o.Len()
 }

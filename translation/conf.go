@@ -1,7 +1,5 @@
 package translation
 
-import "fmt"
-
 const (
 	defaultLang = "en"
 )
@@ -49,11 +47,11 @@ func (o *Conf) CheckDefault() Context {
 
 func (o *Conf) Validate() (errList []error) {
 	if len(o.Fallback) == 0 {
-		errList = append(errList, fmt.Errorf("lang/fallback - empty, using '%s'", defaultLang))
+		errList = append(errList, ErrConfFallbackEmpty)
 	}
 
 	if len(o.Second) == 0 {
-		errList = append(errList, fmt.Errorf("lang/second - empty, using '%s'", defaultLang))
+		errList = append(errList, ErrConfSecondEmpty)
 	}
 
 	o.CheckDefault()
