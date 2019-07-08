@@ -274,3 +274,12 @@ func TestString_GetTranslate(t *testing.T) {
 		t.Error("failed to get a translation for an unknown language")
 	}
 }
+
+func TestString_String(t *testing.T) {
+	str := (&String{}).AddTranslate("ru", "Привет").String()
+	expected := `{"ru":"Привет"}`
+
+	if str != expected {
+		t.Errorf("failed to stringify a translation string. Exist: %v, expected: %v", str, expected)
+	}
+}
