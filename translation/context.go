@@ -57,3 +57,18 @@ func NewContext(base Context, req *http.Request) Context {
 
 	return ctx
 }
+
+func SetTranslationHeaders(req *http.Request, ctx Context) {
+	if ctx.GetDisplay() != "" {
+		req.Header.Set(headerDisplay, ctx.GetDisplay())
+	}
+	if ctx.GetFallback() != "" {
+		req.Header.Set(headerFallback, ctx.GetFallback())
+	}
+	if ctx.GetSecond() != "" {
+		req.Header.Set(headerSecond, ctx.GetSecond())
+	}
+	if ctx.GetTranslationList() {
+		req.Header.Set(headerTranslateList, "true")
+	}
+}

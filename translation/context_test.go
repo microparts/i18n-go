@@ -157,3 +157,44 @@ func TestNewContext(t *testing.T) {
 		}
 	}
 }
+
+func TestSetTranslationHeaders(t *testing.T) {
+	testSuites := []*struct {
+		in       *Conf
+		expected http.Header
+	}{
+		{
+			in: &Conf{
+				Display:         "ru",
+				Fallback:        "en",
+				Second:          "fr",
+				TranslationList: true,
+			},
+			expected: http.Header{
+				headerDisplay:        {"ru"},
+				headerFallback:       {"en"},
+				headerSecond:         {"fr"},
+				headerTranslateListL: {"true"},
+			},
+		},
+		{
+			in: &Conf{
+				Fallback: "en",
+				Second:   "fr",
+			},
+			expected: http.Header{
+				headerFallback: {"en"},
+				headerSecond:   {"fr"},
+			},
+		},
+	}
+
+	for _, test := range testSuites {
+		req, _ := http.NewRequest("POST", "/", nil)
+		SetTranslationHeaders(req, test.in)
+
+		if !reflect.DeepEqual(req.Header, test.expected) {
+			t.Errorf("failed to set all headers. Exist: %v; exp.: %v", req.Header, test.expected)
+		}
+	}
+}
