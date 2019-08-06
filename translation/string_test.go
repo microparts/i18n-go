@@ -156,6 +156,24 @@ func TestString_Empty(t *testing.T) {
 	}
 }
 
+func TestString_HasTranslation(t *testing.T) {
+	if (&String{}).HasTranslation() {
+		t.Error("failed to check an empty string")
+	}
+
+	str := (&String{}).
+		AddTranslate("ru", "Привет").
+		AddTranslate("en", "Hello!")
+	if !str.HasTranslation() {
+		t.Error("failed to check a translation for a string containing a source of translation")
+	}
+
+	str.ApplyTranslationCtx(DefaultConf())
+	if !str.HasTranslation() {
+		t.Error("failed to check a translation for a string containing a result of translation")
+	}
+}
+
 func TestString_Update(t *testing.T) {
 	exist := (&String{}).
 		AddTranslate("ru", "Привет").

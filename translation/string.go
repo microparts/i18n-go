@@ -92,6 +92,7 @@ func (o *String) Clone() *String {
 	return &cloned
 }
 
+// Checking an empty in a source of translation
 func (o *String) Empty() bool {
 	for _, str := range o.Translate {
 		if len(str) > 0 {
@@ -100,6 +101,11 @@ func (o *String) Empty() bool {
 	}
 
 	return true
+}
+
+// Checking a whole state of a string - a source of translation and a result of it
+func (o *String) HasTranslation() bool {
+	return !o.Empty() || o.Display != "" || o.Second != ""
 }
 
 func (o *String) Update(r String) {
