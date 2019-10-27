@@ -56,7 +56,29 @@ func TestString_ApplyTranslationCtx(t *testing.T) {
 	}
 }
 
-func TestString_CleatContext(t *testing.T) {
+func TestString_ResetCtxApplied(t *testing.T) {
+	str := (&String{}).
+		AddTranslate("ru", "Привет").
+		AddTranslate("en", "Hello").
+		ApplyTranslationCtx(&Conf{
+			Display:         "ru",
+			Fallback:        "en",
+			Second:          "en",
+			TranslationList: true,
+		})
+
+	if !str.ctxApplied {
+		t.Errorf("failed to set a flag of already applied translaction context: exist: %v; exp.: %v", str.ctxApplied, true)
+	}
+
+	str.ResetCtxApplied()
+
+	if str.ctxApplied {
+		t.Errorf("failed to reset a flag of already applied translaction context: exist: %v; exp.: %v", str.ctxApplied, false)
+	}
+}
+
+func TestString_ClearContext(t *testing.T) {
 	str := (&String{}).
 		AddTranslate("ru", "Привет").
 		AddTranslate("en", "Hello").

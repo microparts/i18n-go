@@ -37,6 +37,12 @@ func (o *String) Reset() {
 	o.ctxApplied = false
 }
 
+// A response with translation string contains ctxApplied as false.
+// Reset the ctxApplied will be useful in test to compare a response and an expected value.
+func (o *String) ResetCtxApplied() {
+	o.ctxApplied = false
+}
+
 func (o *String) resetTranslation() *String {
 	o.Display = ""
 	o.Second = ""
