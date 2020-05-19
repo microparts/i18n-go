@@ -1,4 +1,4 @@
-This package moved to pacetab-io/i18n-go
+This package moved to https://github.com/spacetab-io/i18n-go
 ----------------------------------------
 
 i18n-go
